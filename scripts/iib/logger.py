@@ -1,7 +1,7 @@
 
-from tool import os
+import os
 import sys
-import is_dev,cwd
+from tool import is_dev, cwd
 
 # 添加 iib 目录到 Python 路径
 iib_dir = os.path.dirname(os.path.abspath(__file__))

@@ -1,6 +1,6 @@
-from tool import os
+import os
 import sys
-import omit
+from tool import omit
 
 # 添加 iib 目录到 Python 路径
 iib_dir = os.path.dirname(os.path.abspath(__file__))

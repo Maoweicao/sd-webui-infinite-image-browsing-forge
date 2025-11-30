@@ -1,6 +1,6 @@
-from PIL import os
+import os
 import sys
-import Image
+from PIL import Image
 import gzip
 
 # 添加 iib 目录到 Python 路径
@@ -11,9 +11,7 @@ from tool import (
     parse_generation_parameters,
     read_sd_webui_gen_info_from_image,
 )
-from parsers.model import os
-import sys
-import ImageGenerationInfo, ImageGenerationParams
+from parsers.model import ImageGenerationInfo, ImageGenerationParams
 # https://github.com/neggles/sd-webui-stealth-pnginfo/blob/main/scripts/stealth_pnginfo.py
 def read_info_from_image_stealth(image, fast_check=False):
     width, height = image.size

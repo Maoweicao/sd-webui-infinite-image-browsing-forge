@@ -1,6 +1,6 @@
-from PIL import os
+import os
 import sys
-import Image
+from PIL import Image
 
 # 添加 iib 目录到 Python 路径
 iib_dir = os.path.dirname(os.path.abspath(__file__))
@@ -11,9 +11,7 @@ from tool import (
     parse_generation_parameters,
     read_sd_webui_gen_info_from_image,
 )
-from parsers.model import os
-import sys
-import ImageGenerationInfo, ImageGenerationParams
+from parsers.model import ImageGenerationInfo, ImageGenerationParams
 
 
 class SdWebUIParser:

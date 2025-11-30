@@ -1,5 +1,6 @@
-from contextlib import sys
-import closing
+import sys
+from contextlib import closing
+import os
 
 # 添加 iib 目录到 Python 路径
 iib_dir = os.path.dirname(os.path.abspath(__file__))
