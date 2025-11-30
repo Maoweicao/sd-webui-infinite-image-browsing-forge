@@ -102,8 +102,6 @@ const onUpdateBtnClick = makeAsyncFunctionSingle(
       await updateImageData()
       info.value = await getDbBasicInfo()
       openedKeys.value = (classifyTags.value.map(v => v[0]))
-      
-      tagStore.tagMap.clear()
       return info.value
     }).res
 )

@@ -1,8 +1,14 @@
-from contextlib import closing
+from contextlib import sys
+import closing
+
+# 添加 iib 目录到 Python 路径
+iib_dir = os.path.dirname(os.path.abspath(__file__))
+if iib_dir not in sys.path:
+    sys.path.insert(0, iib_dir)
 from typing import Dict, List
-from scripts.iib.db.datamodel import Image as DbImg, Tag, ImageTag, DataBase, Folder
+from db.datamodel import Image as DbImg, Tag, ImageTag, DataBase, Folder
 import os
-from scripts.iib.tool import (
+from tool import (
     is_valid_media_path,
     get_modified_date,
     get_video_type,
@@ -13,11 +19,10 @@ from scripts.iib.tool import (
     get_img_geninfo_txt_path,
     parse_generation_parameters
 )
-from scripts.iib.parsers.model import ImageGenerationInfo, ImageGenerationParams
-from scripts.iib.logger import logger
-from scripts.iib.parsers.index import parse_image_info
-from scripts.iib.plugin import plugin_inst_map
-from scripts.iib.auto_tag import AutoTagMatcher
+from parsers.model import ImageGenerationInfo, ImageGenerationParams
+from logger import logger
+from parsers.index import parse_image_info
+from plugin import plugin_inst_map
 
 # 定义一个函数来获取图片文件的EXIF数据
 def get_exif_data(file_path):
@@ -224,5 +229,3 @@ def build_single_img_idx(conn, file_path, is_rebuild, safe_save_img_tag):
     for k in pos:
         tag = Tag.get_or_create(conn, k, "pos")
         safe_save_img_tag(ImageTag(img.id, tag.id))
-    
-    AutoTagMatcher.get_instance(conn).apply(img.id, parsed_params)

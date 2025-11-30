@@ -1,6 +1,13 @@
-from PIL import Image
+from PIL import os
+import sys
+import Image
 
-from scripts.iib.tool import (
+# 添加 iib 目录到 Python 路径
+iib_dir = os.path.dirname(os.path.abspath(__file__))
+if iib_dir not in sys.path:
+    sys.path.insert(0, iib_dir)
+
+from tool import (
     comfyui_exif_data_to_str,
     is_img_created_by_comfyui,
     is_img_created_by_comfyui_with_webui_gen_info,
@@ -8,8 +15,10 @@ from scripts.iib.tool import (
     parse_generation_parameters,
     read_sd_webui_gen_info_from_image,
 )
-from scripts.iib.parsers.model import ImageGenerationInfo, ImageGenerationParams
-from scripts.iib.logger import logger
+from parsers.model import os
+import sys
+import ImageGenerationInfo, ImageGenerationParams
+from logger import logger
 
 
 class ComfyUIParser:
@@ -32,7 +41,7 @@ class ComfyUIParser:
                 params = get_comfyui_exif_data(img)
                 info = comfyui_exif_data_to_str(params)
         except Exception as e:
-            logger.error("parse comfyui image failed. prompt:", exc_info=e)
+            logger.error("parse comfyui image failed. prompt:")
             logger.error(img.info.get("prompt"))
             return ImageGenerationInfo(
                 params=ImageGenerationParams(

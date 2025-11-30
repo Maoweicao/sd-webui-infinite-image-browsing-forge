@@ -1,9 +1,15 @@
 from contextlib import closing
 import argparse
-from scripts.iib.db.datamodel import DataBase
 import os
-
+import sys
 import shutil
+
+# 添加脚本目录到 Python 路径
+script_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "scripts")
+if script_dir not in sys.path:
+    sys.path.insert(0, script_dir)
+
+from iib.db.datamodel import DataBase
 
 
 def replace_path(old_base, new_base):

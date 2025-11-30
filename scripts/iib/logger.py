@@ -1,5 +1,12 @@
 
-from scripts.iib.tool import is_dev,cwd
+from tool import os
+import sys
+import is_dev,cwd
+
+# 添加 iib 目录到 Python 路径
+iib_dir = os.path.dirname(os.path.abspath(__file__))
+if iib_dir not in sys.path:
+    sys.path.insert(0, iib_dir)
 
 import logging
 logger = logging.getLogger(__name__)

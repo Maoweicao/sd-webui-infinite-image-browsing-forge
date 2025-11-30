@@ -139,62 +139,13 @@ function getParNode (p: any) {
   return p.parentNode as HTMLDivElement
 }
 
-function getTextLength(text: string): number {
-  // 中文字符按3个英文字母计算
-  let length = 0
-  for (const char of text) {
-    if (/[\u4e00-\u9fa5]/.test(char)) {
-      length += 3
-    } else {
-      length += 1
-    }
-  }
-  return length
-}
-
-function isTagStylePrompt(tags: string[]): boolean {
-  if (tags.length === 0) return false
-  
-  let totalLength = 0
-  for (const tag of tags) {
-    const tagLength = getTextLength(tag)
-    totalLength += tagLength
-    
-    // 如果存在长度大于50的tag，返回false（自然语言）
-    if (tagLength > 50) {
-      return false
-    }
-  }
-  
-  // 如果平均长度大于30，返回false（自然语言）
-  const avgLength = totalLength / tags.length
-  if (avgLength > 30) {
-    return false
-  }
-  
-  return true
-}
-
 function spanWrap (text: string) {
   if (!text) {
     return ''
   }
-  
+  const frags = [] as string[]
   const specBreakTag = 'BREAK'
   const values = text.replace(/&gt;\s/g, '> ,').replace(/\sBREAK\s/g, ',' + specBreakTag + ',').split(/[\n,]+/).map(v => v.trim()).filter(v => v)
-  // 判断是否为tag形式
-  if (!isTagStylePrompt(values)) {
-    // 自然语言形式：直接显示，保留段落结构
-    return text
-      .split('\n')
-      .map(line => line.trim())
-      .filter(line => line)
-      .map(line => `<p class="natural-text">${line}</p>`)
-      .join('')
-  }
-  
-  // Tag形式：使用原有的标签样式
-  const frags = [] as string[]
   let parenthesisActive = false
   for (let i = 0; i < values.length; i++) {
     if (values[i] === specBreakTag) {
@@ -566,13 +517,6 @@ const onTiktokViewClick = () => {
       line-height: 1.78em;
 
       :deep() {
-        .natural-text {
-          margin: 0.5em 0;
-          line-height: 1.6em;
-          text-align: justify;
-          color: var(--zp-primary);
-        }
-
         .short-tag {
           word-break: break-all;
           white-space: nowrap;

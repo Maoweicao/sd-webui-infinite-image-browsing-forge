@@ -406,7 +406,7 @@ def get_img_geninfo_txt_path(path: str):
 
 def is_img_created_by_comfyui(img: Image):
     if img.format == "PNG":
-        prompt = img.info.get('prompt') or img.info.get('parameters')
+        prompt = img.info.get('prompt')
         return prompt and (img.info.get('workflow') or ("class_type" in prompt)) # ermanitu
     elif img.format == "WEBP":
         exif = img.info.get("exif")
@@ -460,20 +460,11 @@ def get_comfyui_exif_data(img: Image):
     meta["Model"] = data[KSampler_entry["model"][0]]["inputs"].get("ckpt_name")
     meta["Source Identifier"] = "ComfyUI"
     def get_text_from_clip(idx: str) :
-        try:
-            inputs = data[idx]["inputs"]
-            if "text" in inputs:
-                text = inputs["text"]
-            elif "t5xxl" in inputs:
-                text = inputs["t5xxl"]
-            else:
-                return ""
-            if isinstance(text, list): # type:CLIPTextEncode (NSP) mode:Wildcards
-                text = data[text[0]]["inputs"]["text"]
-            return text.strip()
-        except Exception as e:
-            print(e)
-            return ""   
+        inputs = data[idx]["inputs"]
+        text = inputs["text"] if "text" in inputs else inputs["t5xxl"]
+        if isinstance(text, list): # type:CLIPTextEncode (NSP) mode:Wildcards
+            text = data[text[0]]["inputs"]["text"]
+        return text.strip()
     
     in_node = data[str(KSampler_entry["positive"][0])]
     if in_node["class_type"] != "FluxGuidance":

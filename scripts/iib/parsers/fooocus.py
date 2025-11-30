@@ -1,9 +1,15 @@
+import sys
 import os
 import re
+
+# 添加 iib 目录到 Python 路径
+iib_dir = os.path.dirname(os.path.abspath(__file__))
+if iib_dir not in sys.path:
+    sys.path.insert(0, iib_dir)
 from PIL import Image
 
-from scripts.iib.parsers.model import ImageGenerationInfo, ImageGenerationParams
-from scripts.iib.tool import omit, parse_generation_parameters, unique_by
+from parsers.model import ImageGenerationInfo, ImageGenerationParams
+from tool import omit, parse_generation_parameters, unique_by
 
 
 def remove_extra_spaces(text):

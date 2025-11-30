@@ -1,9 +1,15 @@
+import sys
 import os
+
+# 添加 iib 目录到 Python 路径
+iib_dir = os.path.dirname(os.path.abspath(__file__))
+if iib_dir not in sys.path:
+    sys.path.insert(0, iib_dir)
 from typing import BinaryIO
 
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.responses import StreamingResponse
-from scripts.iib.tool import get_video_type
+from tool import get_video_type
 
 video_file_handler = {}
 

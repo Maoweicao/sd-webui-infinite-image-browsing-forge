@@ -1,7 +1,7 @@
 import os
 import importlib.util
 import sys
-from scripts.iib.tool import cwd
+from tool import cwd
 
 def load_plugins(plugin_dir):
     if not os.path.exists(plugin_dir):

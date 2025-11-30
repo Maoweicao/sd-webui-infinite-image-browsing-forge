@@ -1,8 +1,17 @@
-from PIL import Image
+from PIL import os
+import sys
+import Image
 import json
 
-from scripts.iib.parsers.model import ImageGenerationInfo, ImageGenerationParams
-from scripts.iib.tool import omit, parse_generation_parameters, unique_by
+# 添加 iib 目录到 Python 路径
+iib_dir = os.path.dirname(os.path.abspath(__file__))
+if iib_dir not in sys.path:
+    sys.path.insert(0, iib_dir)
+
+from parsers.model import os
+import sys
+import ImageGenerationInfo, ImageGenerationParams
+from tool import omit, parse_generation_parameters, unique_by
 
 class InvokeAIParser:
     def __init__(self):

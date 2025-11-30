@@ -1,11 +1,18 @@
+import os
+import sys
 import json
+
+# 添加 iib 目录到 Python 路径
+iib_dir = os.path.dirname(os.path.abspath(__file__))
+if iib_dir not in sys.path:
+    sys.path.insert(0, iib_dir)
 from PIL import Image
 
-from scripts.iib.tool import (
+from tool import (
     parse_generation_parameters,
     replace_punctuation
 )
-from scripts.iib.parsers.model import ImageGenerationInfo, ImageGenerationParams
+from parsers.model import ImageGenerationInfo, ImageGenerationParams
 
 
 class NovelAIParser:

@@ -2,13 +2,18 @@ import base64
 from datetime import datetime, timedelta
 import io
 import os
+import sys
 from pathlib import Path
 import shutil
 import sqlite3
 
+# 添加 iib 目录到 Python 路径
+iib_dir = os.path.dirname(os.path.abspath(__file__))
+if iib_dir not in sys.path:
+    sys.path.insert(0, iib_dir)
 
-from scripts.iib.dir_cover_cache import get_top_4_media_info
-from scripts.iib.tool import (
+from dir_cover_cache import get_top_4_media_info
+from tool import (
     get_created_date_by_stat,
     get_video_type,
     human_readable_size,
@@ -48,7 +53,7 @@ from PIL import Image
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 import hashlib
-from scripts.iib.db.datamodel import (
+from db.datamodel import (
     DataBase,
     ExtraPathType,
     Image as DbImg,
@@ -60,13 +65,13 @@ from scripts.iib.db.datamodel import (
     Cursor, 
     GlobalSetting
 )
-from scripts.iib.db.update_image_data import update_image_data, rebuild_image_index, add_image_data_single
-from scripts.iib.logger import logger
-from scripts.iib.seq import seq
+from db.update_image_data import update_image_data, rebuild_image_index, add_image_data_single
+from logger import logger
+from seq import seq
 import urllib.parse
-from scripts.iib.fastapi_video import range_requests_response, close_video_file_reader
-from scripts.iib.parsers.index import parse_image_info
-import scripts.iib.plugin
+from fastapi_video import range_requests_response, close_video_file_reader
+from parsers.index import parse_image_info
+import plugin
 
 try:
     import pillow_avif
@@ -313,10 +318,6 @@ def infinite_image_browsing_api(app: FastAPI, **kwargs):
     async def app_fe_setting(req: AppFeSettingReq):
         conn = DataBase.get_conn()
         GlobalSetting.save_setting(conn, req.name, req.value)
-        # 如果更新的是自动标签规则，重新加载
-        if req.name == "auto_tag_rules":
-            from scripts.iib.auto_tag import AutoTagMatcher
-            AutoTagMatcher.reload_rules(conn)
 
     class AppFeSettingDelReq(BaseModel):
         name: str
@@ -715,7 +716,7 @@ def infinite_image_browsing_api(app: FastAPI, **kwargs):
     @app.get(api_base + "/image_geninfo", dependencies=[Depends(verify_secret)])
     async def image_geninfo(path: str):
         # 使用 get_exif_data 函数，它已经支持视频文件
-        from scripts.iib.db.update_image_data import get_exif_data
+        from db.update_image_data import get_exif_data
         try:
             result = get_exif_data(path)
             return result.raw_info or ""
@@ -728,7 +729,7 @@ def infinite_image_browsing_api(app: FastAPI, **kwargs):
 
     @app.post(api_base + "/image_geninfo_batch", dependencies=[Depends(verify_secret)])
     async def image_geninfo_batch(req: GeninfoBatchReq):
-        from scripts.iib.db.update_image_data import get_exif_data
+        from db.update_image_data import get_exif_data
         res = {}
         conn = DataBase.get_conn()
         for path in req.paths:

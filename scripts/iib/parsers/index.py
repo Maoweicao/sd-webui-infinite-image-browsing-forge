@@ -1,15 +1,21 @@
+import sys
 import os
-from scripts.iib.parsers.comfyui import ComfyUIParser
-from scripts.iib.parsers.sd_webui import SdWebUIParser
-from scripts.iib.parsers.fooocus import FooocusParser
-from scripts.iib.parsers.novelai import NovelAIParser
-from scripts.iib.parsers.model import ImageGenerationInfo
-from scripts.iib.parsers.stable_swarm_ui import StableSwarmUIParser
-from scripts.iib.parsers.invoke_ai import InvokeAIParser
-from scripts.iib.parsers.sd_webui_stealth import SdWebUIStealthParser
-from scripts.iib.logger import logger
+
+# 添加 iib 目录到 Python 路径
+iib_dir = os.path.dirname(os.path.abspath(__file__))
+if iib_dir not in sys.path:
+    sys.path.insert(0, iib_dir)
+from parsers.comfyui import ComfyUIParser
+from parsers.sd_webui import SdWebUIParser
+from parsers.fooocus import FooocusParser
+from parsers.novelai import NovelAIParser
+from parsers.model import ImageGenerationInfo
+from parsers.stable_swarm_ui import StableSwarmUIParser
+from parsers.invoke_ai import InvokeAIParser
+from parsers.sd_webui_stealth import SdWebUIStealthParser
+from logger import logger
 from PIL import Image
-from scripts.iib.plugin import plugin_insts
+from plugin import plugin_insts
 import traceback
 
 

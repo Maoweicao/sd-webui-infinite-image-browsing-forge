@@ -1,18 +1,25 @@
 import codecs
+import os
+import sys
 from typing import List
 from fastapi import FastAPI, Response
 from fastapi.responses import FileResponse
 import uvicorn
-import os
-from scripts.iib.api import infinite_image_browsing_api, index_html_path, DEFAULT_BASE
-from scripts.iib.tool import (
+
+# 添加脚本目录到 Python 路径
+script_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "scripts")
+if script_dir not in sys.path:
+    sys.path.insert(0, script_dir)
+
+from iib.api import infinite_image_browsing_api, index_html_path, DEFAULT_BASE
+from iib.tool import (
     get_sd_webui_conf,
     get_valid_img_dirs,
     sd_img_dirs,
     normalize_paths,
 )
-from scripts.iib.db.datamodel import DataBase, Image, ExtraPath
-from scripts.iib.db.update_image_data import update_image_data
+from iib.db.datamodel import DataBase, Image, ExtraPath
+from iib.db.update_image_data import update_image_data
 import argparse
 from typing import Optional, Coroutine
 import json
@@ -279,7 +286,7 @@ if __name__ == "__main__":
     args_dict = vars(args)
 
     if args_dict.get("generate_video_cover"):
-        from scripts.iib.video_cover_gen import generate_video_covers
+        from iib.video_cover_gen import generate_video_covers
 
         conn = DataBase.get_conn()
         generate_video_covers(
@@ -288,7 +295,7 @@ if __name__ == "__main__":
         )
         exit(0)
     if args_dict.get("generate_image_cache"):
-        from scripts.iib.img_cache_gen import generate_image_cache
+        from iib.img_cache_gen import generate_image_cache
         generate_image_cache(
             dirs = get_all_img_dirs(args.sd_webui_config, args.sd_webui_path_relative_to_config), 
             size = args.generate_image_cache_size,

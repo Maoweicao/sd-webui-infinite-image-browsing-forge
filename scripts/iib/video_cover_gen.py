@@ -1,7 +1,13 @@
+import sys
 import hashlib
 import os
+
+# 添加 iib 目录到 Python 路径
+iib_dir = os.path.dirname(os.path.abspath(__file__))
+if iib_dir not in sys.path:
+    sys.path.insert(0, iib_dir)
 from typing import List
-from scripts.iib.tool import get_formatted_date, get_cache_dir, is_video_file
+from tool import get_formatted_date, get_cache_dir, is_video_file
 from concurrent.futures import ThreadPoolExecutor
 import time
 

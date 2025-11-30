@@ -1,4 +1,11 @@
-from scripts.iib.tool import omit
+from tool import os
+import sys
+import omit
+
+# 添加 iib 目录到 Python 路径
+iib_dir = os.path.dirname(os.path.abspath(__file__))
+if iib_dir not in sys.path:
+    sys.path.insert(0, iib_dir)
 
 
 class ImageGenerationParams:

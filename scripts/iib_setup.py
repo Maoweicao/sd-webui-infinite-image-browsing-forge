@@ -1,9 +1,17 @@
-from scripts.iib.api import infinite_image_browsing_api, send_img_path
+import os
+import sys
+
+# 添加脚本目录到 Python 路径
+script_dir = os.path.dirname(os.path.abspath(__file__))
+if script_dir not in sys.path:
+    sys.path.insert(0, script_dir)
+
+from iib.api import infinite_image_browsing_api, send_img_path
 from modules import script_callbacks, generation_parameters_copypaste as send
-from scripts.iib.tool import locale
-from scripts.iib.tool import read_sd_webui_gen_info_from_image
+from iib.tool import locale
+from iib.tool import read_sd_webui_gen_info_from_image
 from PIL import Image
-from scripts.iib.logger import logger
+from iib.logger import logger
 
 from fastapi import FastAPI
 import gradio as gr

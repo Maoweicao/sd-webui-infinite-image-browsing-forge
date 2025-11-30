@@ -1,6 +1,12 @@
+import sys
 import os
-from scripts.iib.db.datamodel  import DirCoverCache, DataBase
-from scripts.iib.tool import get_created_date_by_stat, get_formatted_date, is_valid_media_path, get_video_type, birthtime_sort_key_fn
+
+# 添加 iib 目录到 Python 路径
+iib_dir = os.path.dirname(os.path.abspath(__file__))
+if iib_dir not in sys.path:
+    sys.path.insert(0, iib_dir)
+from db.datamodel import DirCoverCache, DataBase
+from tool import get_created_date_by_stat, get_formatted_date, is_valid_media_path, get_video_type, birthtime_sort_key_fn
 
 def get_top_4_media_info(folder_path):
     """
